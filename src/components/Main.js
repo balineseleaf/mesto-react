@@ -13,7 +13,7 @@ const Main = (props) => {
           setUserAvatar(res.avatar);
           setUserDescription(res.about);
           setUserName(res.name);
-        })
+        }).catch((err) => console.log(`catch: ${err}`));
       }, []);
 
     return (

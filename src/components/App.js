@@ -1,5 +1,4 @@
 import React from "react";
-import '../index.css';
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -21,7 +20,7 @@ function App() {
         id: item._id
       }));
       setCards(cardsFromApi);
-    });
+    }).catch((err) => console.log(`catch: ${err}`));
   }, []);
 
   // попап редактирования
