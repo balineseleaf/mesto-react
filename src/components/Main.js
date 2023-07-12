@@ -1,48 +1,64 @@
-import editAvatar from '../images/editavatar.svg';
-import api from "../utils/api";
-import React from 'react';
+import editAvatar from "../images/editavatar.svg";
+import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import Card from "./Card";
 
 const Main = (props) => {
-    const {onEditProfile, onAddPlace, onEditAvatar, children} = props; // по клику будет передаваться ф-ия из App.js,которая меняет состояние на true
-    const [userName, setUserName] = React.useState("");
-    const [userDescription, setUserDescription] = React.useState("");
-    const [userAvatar, setUserAvatar] = React.useState("");
+  const {
+    onEditProfile,
+    onAddPlace,
+    onCardLike,
+    onEditAvatar,
+    cards,
+    onCardClick,
+    onCardDelete,
+  } = props; // по клику будет передаваться ф-ии из App.js,которая меняет состояние на true
 
-    React.useEffect(() => {
-        api.getUserData().then((res) => {
-          setUserAvatar(res.avatar);
-          setUserDescription(res.about);
-          setUserName(res.name);
-        }).catch((err) => console.log(`catch: ${err}`));
-      }, []);
+  const currentUser = React.useContext(CurrentUserContext); // подписка на контекст
 
-    return (
-        <main className="content">
-        <section className="profile">
-          <div className="profile__info">
-            <div className="profile__info-container" onClick={onEditAvatar}>
-                <img
-                  className="profile__image"
-                  alt="Фотография профиля"
-                  src={userAvatar}
-                />
-                <img className="profile__edit-icon" alt="" src={editAvatar} />
-            </div>
-            <div className="profile__bio">
-              <div className="profile__block-info">
-                <h1 className="profile__name">{userName}</h1>
-                <button type="button" className="profile__edit-button" onClick={onEditProfile}></button> 
-              </div>
-              <p className="profile__description">{userDescription}</p>
-            </div>
+  return (
+    <main className="content">
+      <section className="profile">
+        <div className="profile__info">
+          <div className="profile__info-container" onClick={onEditAvatar}>
+            <img
+              className="profile__image"
+              alt="Фотография пользователя"
+              src={currentUser.avatar}
+            />
+            <img className="profile__edit-icon" alt="" src={editAvatar} />
           </div>
-          <button type="button" className="profile__add-button" onClick={onAddPlace}></button>
-        </section>
-        <section className="elements">
-            {children}
-        </section>
-      </main>
-      );
-}
- 
+          <div className="profile__bio">
+            <div className="profile__block-info">
+              <h1 className="profile__name">{currentUser.name}</h1>
+              <button
+                type="button"
+                className="profile__edit-button"
+                onClick={onEditProfile}
+              ></button>
+            </div>
+            <p className="profile__description">{currentUser.about}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="profile__add-button"
+          onClick={onAddPlace}
+        ></button>
+      </section>
+      <section className="elements">
+        {cards.map((item) => (
+          <Card
+            key={item._id}
+            onCardLike={onCardLike}
+            onCardClick={onCardClick}
+            onCardDelete={onCardDelete}
+            {...item}
+          />
+        ))}
+      </section>
+    </main>
+  );
+};
+
 export default Main;
