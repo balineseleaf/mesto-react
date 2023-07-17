@@ -3,7 +3,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
-import PopupWithForm from "./PopupWithForm";
+//import ConfirmDeleteCardPopup from "./ConfirmDeleteCardPopup";
 import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -76,12 +76,14 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
-  // попап удаления
-  const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
+  //попап удаления
+  //const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
 
   function handleDeleteCardClick() {
-    setIsDeletePopupOpen(true);
+    //setIsDeletePopupOpen(true);
   }
+  //стейт для подтверждения удаления карточки
+  //const [cardToDelete, setCardToDelete] = React.useState({});
 
   // зуум изображение
   const [selectedCard, setSelectedCard] = React.useState({});
@@ -134,7 +136,7 @@ function App() {
       .then((newCard) => {
         const newCards = cards.filter((c) =>
           c._id === card._id ? "" : newCard
-        );
+        ); // возвращает массив карточек, прошедших проверку
         setCards(newCards);
       })
       .catch((err) => console.log(err));
@@ -169,7 +171,7 @@ function App() {
     api
       .postNewCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]); // исп ... для расширения текущего массива
+        setCards([newCard, ...cards]); // исп "..." для расширения текущего массива
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -234,19 +236,11 @@ function App() {
           onClose={closeAllPopups}
           onSubmit={handleAddPlaceSubmit}
         />
-        <PopupWithForm
-          title={"Вы уверены?"}
-          name={"delete-card"}
-          onClose={closeAllPopups}
+        {/* {<ConfirmDeleteCardPopup
           isOpen={isDeletePopupOpen}
-        >
-          <button
-            type="submit"
-            className="popup__submit popup__submitDeleteCard"
-          >
-            Да
-          </button>
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onSubmit={handleCardDelete}
+        />} */}
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}

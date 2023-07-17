@@ -1,13 +1,14 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
-const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar }) => {
+const EditAvatarPopup = (props) => {
+  const { isOpen, onClose, onUpdateAvatar } = props;
   const ref = React.useRef();
 
   function handleSubmit(evt) {
     evt.preventDefault();
     onUpdateAvatar({
-      avatar: ref.current.value,
+      avatar: ref.current.value, //current ссылается на DOM элемент input и берем поле value
     });
   }
   // очищаем инпуты

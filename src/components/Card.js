@@ -1,8 +1,9 @@
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import React from "react";
 
-const Card = (card) => {
-  //nen наша карточка и у нее уже берем все нужные поля: имя, лайки, айди, овнерАйди, описание...
+const Card = (props) => {
+  const { card, onCardClick, onCardDelete, onCardLike } = props;
+  //тут наша карточка и у нее уже берем все нужные поля: имя, лайки, айди, овнерАйди, описание...
 
   const currentUser = React.useContext(CurrentUserContext); // тут мои данные - все поля
 
@@ -19,15 +20,15 @@ const Card = (card) => {
 
   // фу-ия с лайком
   function handleLikeClick() {
-    card.onCardLike(card); // метод  у card
+    onCardLike(card); // метод  у card
   }
 
   function handleClick() {
-    card.onCardClick(card); //здесь лежит выбранная карточка для зум
+    onCardClick(card); //здесь лежит выбранная карточка для зум
   }
 
   function handleDeleteClick() {
-    card.onCardDelete(card);
+    onCardDelete(card);
   }
 
   return (
@@ -37,6 +38,7 @@ const Card = (card) => {
           className="element__delete-card-button"
           type="button"
           onClick={handleDeleteClick}
+          //isOpen={card.isOpen}
         />
       )}
       <img

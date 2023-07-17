@@ -1,8 +1,22 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
-const AddPlacePopup = ({ isOpen, onClose, onSubmit }) => {
+const AddPlacePopup = (props) => {
+  const { isOpen, onClose, onSubmit } = props;
   const [name, setName] = React.useState("");
   const [link, setLink] = React.useState("");
+
+  // const ref = React.useRef();
+  // const ref_link = React.useRef();
+  // очищаем инпуты в попапе
+  React.useEffect(() => {
+    if (isOpen) {
+      setName("");
+      setLink("");
+    }
+  }, [isOpen]);
+  // React.useEffect(() => {
+  //   ref.current.value = "";
+  // }, [isOpen]);
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -19,14 +33,6 @@ const AddPlacePopup = ({ isOpen, onClose, onSubmit }) => {
       link: link,
     });
   }
-
-  // очищаем инпуты в попапе
-  React.useEffect(() => {
-    if (isOpen) {
-      setName("");
-      setLink("");
-    }
-  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -47,6 +53,8 @@ const AddPlacePopup = ({ isOpen, onClose, onSubmit }) => {
           maxLength="30"
           type="text"
           onChange={handleNameChange}
+          value={name}
+          //ref={ref}
         />
         <span className="placeName-input-error popup__text-error">
           Вы пропустили это поле
@@ -59,6 +67,8 @@ const AddPlacePopup = ({ isOpen, onClose, onSubmit }) => {
           required
           type="url"
           onChange={handleLinkChange}
+          value={link}
+          //ref={ref_link}
         />
         <span className="link-input-error popup__text-error">
           Введите адрес сайта

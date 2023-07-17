@@ -2,7 +2,8 @@ import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import PopupWithForm from "./PopupWithForm";
 
-const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
+const EditProfilePopup = (props) => {
+  const { isOpen, onClose, onUpdateUser } = props;
   const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -17,7 +18,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   }
 
   React.useEffect(() => {
-    setName(currentUser.name ?? "");
+    setName(currentUser.name ?? ""); // если существует, то оставляем текущий или пустую строку в противном случае
     setDescription(currentUser.about ?? "");
   }, [currentUser]);
 

@@ -14,5 +14,6 @@
   .profile__image {
     margin: 0 auto;
     margin-bottom: 22.25px;
+    display: block;
   }
 }

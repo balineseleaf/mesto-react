@@ -53,7 +53,8 @@ const Main = (props) => {
             onCardLike={onCardLike}
             onCardClick={onCardClick}
             onCardDelete={onCardDelete}
-            {...item}
+            //isOpen={isOpen}
+            card={item}
           />
         ))}
       </section>
