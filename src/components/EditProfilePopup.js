@@ -20,7 +20,7 @@ const EditProfilePopup = (props) => {
   React.useEffect(() => {
     setName(currentUser.name ?? ""); // если существует, то оставляем текущий или пустую строку в противном случае
     setDescription(currentUser.about ?? "");
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   //сабмит формы
   function handleSubmit(e) {
@@ -39,6 +39,7 @@ const EditProfilePopup = (props) => {
       name={"edit-profile"}
       isOpen={isOpen}
       onClose={onClose}
+      buttonText={"Сохранить"}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__fieldset">
@@ -68,12 +69,6 @@ const EditProfilePopup = (props) => {
           onChange={handleDescriptionChange}
         />
         <span className="description-input-error popup__text-error"></span>
-        <button
-          type="submit"
-          className="popup__submit popup__submitEditProfile"
-        >
-          Сохранить
-        </button>
       </fieldset>
     </PopupWithForm>
   );

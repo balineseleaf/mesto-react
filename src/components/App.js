@@ -7,12 +7,19 @@ import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup.";
+import AddPlacePopup from "./AddPlacePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext"; // импортируем объект контекста
 
 function App() {
   // карточки
   const [cards, setCards] = React.useState([]);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
   // инфо о пользователе
   const [currentUser, setCurrentUser] = React.useState({});
 
@@ -30,48 +37,47 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  // React.useEffect(() => {
-  //   api
-  //     .getUserData()
-  //     .then((userdata) => {
-  //       setCurrentUser({
-  //         name: userdata?.name,
-  //         about: userdata?.about,
-  //         avatar: userdata?.avatar,
-  //         _id: userdata?._id,
-  //       });
-  //     })
-  //     .catch((err) => console.log(`catch: ${err}`));
-  // }, []);
+  // закрытие попапа на Esc c useEffect
+  // Слушатель Esc необходимо устанавливать не при монтировании компонента, а при открытии попапов.
+  const isAnyPopupOpen = React.useMemo(() => {
+    return (
+      isEditProfilePopupOpen ||
+      isAddPlacePopupOpen ||
+      isEditAvatarPopupOpen ||
+      selectedCard
+    );
+  }, [
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    isEditAvatarPopupOpen,
+    selectedCard,
+  ]);
 
-  // React.useEffect(() => {
-  //   api
-  //     .getInitialCards()
-  //     .then((cards) => {
-  //       setCards(cards);
-  //     })
-  //     .catch((err) => console.log(`catch: ${err}`));
-  // }, []);
+  React.useEffect(() => {
+    if (isAnyPopupOpen) {
+      const closePopupByEsc = (evt) => {
+        if (evt.key === "Escape") {
+          closeAllPopups();
+        }
+      };
+      document.addEventListener("keydown", closePopupByEsc);
+      return () => {
+        document.removeEventListener("keydown", closePopupByEsc);
+      };
+    }
+  }, [isAnyPopupOpen]);
 
   // попап редактирования
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
-
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
 
   // попап добавления
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
 
   // попап аватара
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
-
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
@@ -86,9 +92,6 @@ function App() {
   //const [cardToDelete, setCardToDelete] = React.useState({});
 
   // зуум изображение
-  const [selectedCard, setSelectedCard] = React.useState({});
-
-  const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
 
   function handleCardClick(cardData) {
     setImagePopupOpen(true);
@@ -133,11 +136,8 @@ function App() {
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
-      .then((newCard) => {
-        const newCards = cards.filter((c) =>
-          c._id === card._id ? "" : newCard
-        ); // возвращает массив карточек, прошедших проверку
-        setCards(newCards);
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((err) => console.log(err));
   }
@@ -176,36 +176,6 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
-
-  // закрытие попапа на Esc c useEffect
-  // Слушатель Esc необходимо устанавливать не при монтировании компонента, а при открытии попапов.
-  const isAnyPopupOpen = React.useMemo(() => {
-    return (
-      isEditProfilePopupOpen ||
-      isAddPlacePopupOpen ||
-      isEditAvatarPopupOpen ||
-      selectedCard
-    );
-  }, [
-    isEditProfilePopupOpen,
-    isAddPlacePopupOpen,
-    isEditAvatarPopupOpen,
-    selectedCard,
-  ]);
-
-  React.useEffect(() => {
-    if (isAnyPopupOpen) {
-      const closePopupByEsc = (evt) => {
-        if (evt.key === "Escape") {
-          closeAllPopups();
-        }
-      };
-      document.addEventListener("keydown", closePopupByEsc);
-      return () => {
-        document.removeEventListener("keydown", closePopupByEsc);
-      };
-    }
-  }, [isAnyPopupOpen]);
 
   return (
     <CurrentUserContext.Provider

@@ -26,7 +26,11 @@ const Main = (props) => {
               alt="Фотография пользователя"
               src={currentUser.avatar}
             />
-            <img className="profile__edit-icon" alt="" src={editAvatar} />
+            <img
+              className="profile__edit-icon"
+              alt="Иконка редактирования профиля"
+              src={editAvatar}
+            />
           </div>
           <div className="profile__bio">
             <div className="profile__block-info">

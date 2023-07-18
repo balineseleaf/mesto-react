@@ -5,8 +5,6 @@ const AddPlacePopup = (props) => {
   const [name, setName] = React.useState("");
   const [link, setLink] = React.useState("");
 
-  // const ref = React.useRef();
-  // const ref_link = React.useRef();
   // очищаем инпуты в попапе
   React.useEffect(() => {
     if (isOpen) {
@@ -14,9 +12,6 @@ const AddPlacePopup = (props) => {
       setLink("");
     }
   }, [isOpen]);
-  // React.useEffect(() => {
-  //   ref.current.value = "";
-  // }, [isOpen]);
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -40,6 +35,7 @@ const AddPlacePopup = (props) => {
       name={"card-add"}
       isOpen={isOpen}
       onClose={onClose}
+      buttonText={"Сохранить"}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__fieldset">
@@ -54,7 +50,6 @@ const AddPlacePopup = (props) => {
           type="text"
           onChange={handleNameChange}
           value={name}
-          //ref={ref}
         />
         <span className="placeName-input-error popup__text-error">
           Вы пропустили это поле
@@ -68,14 +63,10 @@ const AddPlacePopup = (props) => {
           type="url"
           onChange={handleLinkChange}
           value={link}
-          //ref={ref_link}
         />
         <span className="link-input-error popup__text-error">
           Введите адрес сайта
         </span>
-        <button type="submit" className="popup__submit popup__submitAddCard">
-          Создать
-        </button>
       </fieldset>
     </PopupWithForm>
   );

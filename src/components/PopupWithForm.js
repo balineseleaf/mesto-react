@@ -1,6 +1,6 @@
 const PopupWithForm = (props) => {
   // name - это пропс в App.js  у компонента формы
-  const { isOpen, onClose, onSubmit } = props; // если нам пришло true из App.js после отработки ф-ии handle... , то здесь мы уже добавляем класс с открытым попапом
+  const { isOpen, onClose, onSubmit, buttonText } = props; // если нам пришло true из App.js после отработки ф-ии handle... , то здесь мы уже добавляем класс с открытым попапом
   return (
     <section
       className={`popup popup_type_${props.name} ${
@@ -13,10 +13,12 @@ const PopupWithForm = (props) => {
           id="formEditProfile"
           name={`form-${props.name}`}
           className={`popup__form popup__form_${props.name}`}
-          noValidate
           onSubmit={onSubmit}
         >
           {props.children}
+          <button type="submit" className="popup__submit">
+            {buttonText}
+          </button>
         </form>
         <button
           type="button"
