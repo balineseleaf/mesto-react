@@ -11,7 +11,6 @@ import AddPlacePopup from "./AddPlacePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext"; // импортируем объект контекста
 
 function App() {
-  // карточки
   const [cards, setCards] = React.useState([]);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
@@ -20,7 +19,6 @@ function App() {
     React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
-  // инфо о пользователе
   const [currentUser, setCurrentUser] = React.useState({});
 
   React.useEffect(() => {
